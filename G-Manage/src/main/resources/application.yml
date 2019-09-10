@@ -1,0 +1,67 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: /manage
+  port: 8081
+spring:
+  profiles:
+    active: dev
+  redis:
+    database: 0
+    host: @redis.ip@
+    port: 6379
+    password: @redis.password@
+    jedis:
+      pool:
+        max-wait: -1ms
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+  rabbitmq:
+    host: @rabbitmq.ip@
+    port: 5672
+    username: @rabbitmq.username@
+    password: @rabbitmq.password@
+    virtual-host: /
+    publisher-confirms: true    # 开启发送确认
+    publisher-returns:  true    # 开启发送失败退回
+    listener:
+      direct:
+        acknowledge-mode: manual
+      simple:
+        acknowledge-mode: manual
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+
+#MyBatis配置
+mybatis:
+  mapper-locations: classpath*:mapping/*/*.xml
+  type-aliases-package: com.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#Mapper通用插件
+mapper:
+  mappers: com.MyMapper
+  not-empty: false
+  identity: MYSQL
+
+#分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+
+#日志
+logging:
+  file: ./log/manage.log
+  level:
+    org.xxpay.service.dao.mapper: debug
+
+config:
+  Swagger2Enable: true
