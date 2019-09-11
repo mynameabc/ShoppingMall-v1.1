@@ -15,7 +15,7 @@ public class JWTUtil {
     // 过期时间 7 天
     private static final long EXPIRE_TIME = 7 * 60 * 24 * 60 * 1000;
     // 密钥
-    private static final String SECRET = "CWGJ@CWGJ";
+    private static final String SECRET = "PROJECTNAME@PROJECTNAME";
 
     public static final String ACCOUNT_ID = "accountId";
 

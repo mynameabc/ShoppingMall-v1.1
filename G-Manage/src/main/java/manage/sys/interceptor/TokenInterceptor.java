@@ -1,6 +1,14 @@
 package manage.sys.interceptor;
 
+import com.alibaba.fastjson.JSON;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import manage.sys.Result;
+import manage.sys.ResultCode;
+import manage.sys.exception.userException.TokenNullException;
+import manage.util.JWTUtil;
 import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -8,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
@@ -15,18 +25,44 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //拦截前
+        AuthenticationException failed = null;
+        String token = request.getHeader(JWTUtil.TOKEN);
 
-        //判断token是否为空
-        //判断token是否有效
-        //
+        try {
 
+            //判断token是否为空
+            if (StringUtils.isEmpty(token)) {
+                throw new TokenNullException("无token, 请重新登陆!");
+            }
 
-        String token = request.getHeader("token");
-        if (StringUtils.isEmpty(token)) {
+            //判断token是否有效
+            Long accountId = JWTUtil.getAccountId(token);
+            if (null == accountId) {
+                throw new JWTDecodeException("无效的token!");
+            }
+
+        } catch (TokenNullException e) {
+            //token为空异常
+            failed = new InsufficientAuthenticationException("无token, 请重新登陆!", failed);
+        } catch (JWTDecodeException e) {
+            //token解析异常
+            failed = new InsufficientAuthenticationException("无效的token!", failed);
+        }
+
+        if (failed != null) {
+            UnsuccessfulAuthentication(request, response, failed);
             return false;
         }
 
         return true;
+    }
+
+    private void UnsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+        response.setHeader("content-type", "application/json; charset=utf-8");
+        PrintWriter out = response.getWriter();
+        out.write(JSON.toJSONString(Result.fail(ResultCode.USER_EXCEPTION, exception.getMessage())));
+        out.flush();
+        out.close();
     }
 
     @Override
