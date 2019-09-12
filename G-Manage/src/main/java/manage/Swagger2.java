@@ -1,5 +1,6 @@
 package manage;
 
+import manage.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +40,7 @@ public class Swagger2 {
     private List<Parameter> setHeaderToken() {
         ParameterBuilder tokenPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
-        tokenPar.name("token").description("令牌").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+        tokenPar.name(JWTUtil.TOKEN).description("令牌").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
         pars.add(tokenPar.build());
         return pars;
     }

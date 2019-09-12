@@ -2,6 +2,7 @@ package manage.sys.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import lombok.extern.slf4j.Slf4j;
 import manage.sys.Result;
 import manage.sys.ResultCode;
 import manage.sys.exception.userException.TokenNullException;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@Slf4j
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
 
@@ -58,6 +60,8 @@ public class TokenInterceptor implements HandlerInterceptor {
     }
 
     private void UnsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+
+        log.error("token错误!");
         response.setHeader("content-type", "application/json; charset=utf-8");
         PrintWriter out = response.getWriter();
         out.write(JSON.toJSONString(Result.fail(ResultCode.USER_EXCEPTION, exception.getMessage())));
