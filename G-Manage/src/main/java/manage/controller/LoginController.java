@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import manage.pojo.dto.LoginDTO;
 import manage.sys.UserDetail;
-import manage.sys.annotation.UserLoginedInfo;
+import manage.sys.annotation.UserLoginInfo;
 import manage.util.JWTUtil;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +27,7 @@ public class LoginController {
 
     @ApiOperation(value="测试")
     @PostMapping(value = "/test")
-    public String test(String test, @UserLoginedInfo @ApiIgnore UserDetail userDetail) {
+    public String test(String test, @UserLoginInfo @ApiIgnore UserDetail userDetail) {
         System.out.println("test:" + userDetail.getAccountId());
         return test;
     }

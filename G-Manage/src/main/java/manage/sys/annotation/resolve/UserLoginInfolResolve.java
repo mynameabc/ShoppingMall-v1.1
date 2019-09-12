@@ -1,7 +1,6 @@
 package manage.sys.annotation.resolve;
 
-import manage.sys.UserDetail;
-import manage.sys.annotation.UserLoginedInfo;
+import manage.sys.annotation.UserLoginInfo;
 import manage.util.JWTUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -11,21 +10,23 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
+import communal.user.IUserDetailInfo;
+import communal.user.UserDetail;
 
 @Component
-public class UserLoginedInfolResolve implements HandlerMethodArgumentResolver {
+public class UserLoginInfolResolve implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
-        return methodParameter.hasParameterAnnotation(UserLoginedInfo.class);
+        return methodParameter.hasParameterAnnotation(UserLoginInfo.class);
     }
 
     @Override
-    public UserDetail resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest
+    public IUserDetailInfo resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest
             webRequest, WebDataBinderFactory binderFactory) {
 
         HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
         long accountId = JWTUtil.getAccountId(servletRequest.getHeader(JWTUtil.TOKEN));
-        return new UserDetail(accountId);
+        return new UserDetail();
     }
 }
