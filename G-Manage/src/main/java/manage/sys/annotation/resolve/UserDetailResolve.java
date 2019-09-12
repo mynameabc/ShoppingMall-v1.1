@@ -1,4 +1,4 @@
-package manage.sys.resolve;
+package manage.sys.annotation.resolve;
 
 import manage.sys.UserDetail;
 import manage.sys.annotation.UserLoginedInfo;
