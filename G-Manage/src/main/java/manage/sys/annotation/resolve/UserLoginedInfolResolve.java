@@ -13,7 +13,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
-public class UserDetailResolve implements HandlerMethodArgumentResolver {
+public class UserLoginedInfolResolve implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
