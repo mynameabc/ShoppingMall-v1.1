@@ -1,0 +1,17 @@
+server:
+  undertow:
+    io-threads: 4
+    worker-threads: 128
+    buffer-size: 1024
+    direct-buffers: true
+  servlet:
+    context-path: /api
+  port: 5788
+spring:
+  profiles:
+    include: persistence
+  http:
+    encoding:
+      force: true
+      enabled: true
+      charset: UTF-8

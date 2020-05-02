@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.PayOrderMapper">
+  <resultMap id="BaseResultMap" type="com.entity.PayOrder">
+    <id column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="amount" jdbcType="VARCHAR" property="amount" />
+    <result column="platform_order_no" jdbcType="VARCHAR" property="platformOrderNo" />
+    <result column="client_order_status" jdbcType="VARCHAR" property="clientOrderStatus" />
+    <result column="notify_url" jdbcType="VARCHAR" property="notifyUrl" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="receiving_goods_status" jdbcType="VARCHAR" property="receivingGoodsStatus" />
+    <result column="notify_send_notify_count" jdbcType="INTEGER" property="notifySendNotifyCount" />
+    <result column="goods_url" jdbcType="VARCHAR" property="goodsUrl" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="client_order_no" jdbcType="VARCHAR" property="clientOrderNo" />
+    <result column="pay_url" jdbcType="VARCHAR" property="payUrl" />
+    <result column="sign" jdbcType="VARCHAR" property="sign" />
+    <result column="return_result" jdbcType="VARCHAR" property="returnResult" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="receiving_goods_time" jdbcType="TIMESTAMP" property="receivingGoodsTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    order_id, channel, pay_type, amount, platform_order_no, client_order_status, notify_url, 
+    status, receiving_goods_status, notify_send_notify_count, goods_url, user_name, password, client_order_no,
+    pay_url, sign, return_result, create_time, pay_time, receiving_goods_time
+  </sql>
+
+  <select id="getOrderForPlatformOrderNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pay_order
+    where platform_order_no = #{platformOrderNo} limit 1
+  </select>
+
+  <select id="getOrderForClientOrderNo" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from pay_order where client_order_no = #{clientOrderNo}
+  </select>
+
+</mapper>
